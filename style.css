@@ -1,0 +1,22 @@
+*,*::before,*::after {
+    box-sizing: border-box;
+}
+
+.not-read {
+    background-color: rgb(255, 158, 158);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px; 
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    border: 1px solid black;
+}
+
+.book {
+    width: 150px;
+    height: 300px;
+    border: 1px solid black;
+}
