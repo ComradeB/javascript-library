@@ -2,6 +2,12 @@
     box-sizing: border-box;
 }
 
+body {
+    display: grid;
+    place-items: center;
+    margin-top: 20%;
+}
+
 .not-read {
     background-color: rgb(255, 158, 158);
     border: none;
@@ -9,14 +15,30 @@
     border-radius: 5px; 
 }
 
-.container {
+.library-container {
     display: flex;
-    width: 80%;
-    border: 1px solid black;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 50%;
+    gap: 1em;
 }
 
 .book {
-    width: 150px;
-    height: 300px;
     border: 1px solid black;
+    justify-content: space-around;
+}
+
+.new-book-form-hidden {
+    scale: 0;
+}
+
+.new-book-form-active {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60vw;
+    transition: 500ms ease-in-out;
+    scale: 1;
+    border: 1px solid black;
+    z-index: 1;
 }
