@@ -7,9 +7,7 @@ const author = document.querySelector("#author");
 const title = document.querySelector("#title");
 const pages = document.querySelector("#pages");
 const readStatus = document.querySelector("#read-status");
-const labelElements = document.querySelectorAll("label");
 const inputElements = document.querySelectorAll("input");
-const form = document.querySelector("ul");
 
 let myLibrary = [];
 
@@ -24,6 +22,21 @@ function Book(author, title, pageNo, readOrNot) {
     Read? ${readOrNot}`;
 }
 
+Book.prototype.toggleReadStatus = (newBookDiv) => {
+  const toggleReadButton = document.createElement("button");
+  toggleReadButton.textContent = readOrNot;
+  toggleReadButton.addEventListener("click", () => {
+    if (toggleReadButton.textContent === "Yes!") {
+      toggleReadButton.textContent = "Not yet...";
+      newBookDiv.textContent.replace("Yes!", "Not yet...");
+    } else {
+      toggleReadButton.textContent = "Yes!";
+      newBookDiv.textContent.replace("Not yet...", "Yes!");
+    }
+  });
+  newBookDiv.appendChild(toggleReadButton);
+};
+
 function addBookToLibrary(book) {
   myLibrary.push(book);
 }
@@ -35,7 +48,8 @@ function showLibrary() {
     newBookDiv.classList.add("book");
     newBookDiv.textContent = book.info;
     libraryContainer.append(newBookDiv);
-    addRemoveBookButton(newBookDiv);
+    addRemoveBookButtonTo(newBookDiv);
+    addToggleReadButtonTo(newBookDiv);
   });
 }
 
@@ -47,13 +61,24 @@ newBookButton.addEventListener("click", () => {
       author.value === /\d/ ||
       title.value === "" ||
       title.value === /\d/ ||
-      pages.value === "0" ||
+      pages.value.charAt(0) === "0" ||
       pages.value === ""
     )
       return;
-    else {
+    else if (readStatus.checked === true) {
       addBookToLibrary(
-        new Book(author.value, title.value, pages.value, readStatus.value)
+        new Book(author.value, title.value, pages.value, (readOrNot = "Yes!"))
+      );
+      hideForm();
+      showLibrary();
+    } else {
+      addBookToLibrary(
+        new Book(
+          author.value,
+          title.value,
+          pages.value,
+          (readOrNot = "Not yet...")
+        )
       );
       hideForm();
       showLibrary();
@@ -69,18 +94,35 @@ function showForm() {
 function hideForm() {
   inputElements.forEach(
     (input) => (input.value = ""),
-    (readStatus.value = "off")
+    (readStatus.checked = false)
   );
   newBookForm.classList.remove("new-book-form-active");
   newBookForm.classList.add("new-book-form-hidden");
 }
 
-function addRemoveBookButton(newBookDiv) {
+function addRemoveBookButtonTo(newBookDiv) {
   const removeBookButton = document.createElement("button");
   removeBookButton.textContent = "Remove";
   removeBookButton.addEventListener("click", () => {
-    removeBookButton.parentNode.replaceChildren();
-    myLibrary.splice(myLibrary.indexOf(this), 1)
+    libraryContainer.removeChild(removeBookButton.parentNode);
+    myLibrary.splice(myLibrary.indexOf(this), 1);
   });
   newBookDiv.appendChild(removeBookButton);
+}
+
+function addToggleReadButtonTo(newBookDiv) {
+  const toggleReadButton = document.createElement("button");
+  toggleReadButton.textContent = this.readOrNot;
+  newBookDiv.appendChild(toggleReadButton);
+  toggleReadButton.addEventListener("click", () => {
+    if (toggleReadButton.textContent === "Yes!") {
+      toggleReadButton.textContent = "Not yet...";
+      newBookDiv.textContent.replace("Yes!", "Not yet...");
+      readStatus.checked = false;
+    } else {
+      toggleReadButton.textContent = "Yes!";
+      newBookDiv.textContent.replace("Not yet...", "Yes!");
+      readStatus.checked = true;
+    }
+  });
 }

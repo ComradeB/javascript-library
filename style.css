@@ -5,7 +5,8 @@
 body {
     display: grid;
     place-items: center;
-    margin-top: 20%;
+    margin-top: 5%;
+    line-height: 1.4;
 }
 
 .not-read {
@@ -19,26 +20,46 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    max-width: 50%;
+    max-width: 60%;
     gap: 1em;
+    padding: 1em;
 }
 
 .book {
     border: 1px solid black;
     justify-content: space-around;
+    display: flex;
+    padding: 2em;
+    border-radius: 0.5em;
 }
 
 .new-book-form-hidden {
-    scale: 0;
+    display: none;
 }
 
 .new-book-form-active {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 60vw;
+    flex-direction: column;
+    max-width: 40%;
     transition: 500ms ease-in-out;
-    scale: 1;
     border: 1px solid black;
-    z-index: 1;
+    padding: 1em;
+    border-radius: 0.5em;
+    gap: 0.5em;
+}
+
+button {
+    border: none;
+    border-radius: 0.5em;
+    padding: 1em;
+    background-color: white;
+    margin-left: 0.25em;
+    min-width: 6em;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+    transition: 150ms ease-in-out;
+    cursor: pointer;
 }
