@@ -11,31 +11,18 @@ const inputElements = document.querySelectorAll("input");
 
 let myLibrary = [];
 
-function Book(author, title, pageNo, readOrNot) {
-  this.author = author;
-  this.title = title;
-  this.pageNo = pageNo;
-  this.readOrNot = readOrNot;
-  this.info = `Author: ${author}
+class Book {
+  constructor(author, title, pageNo, readOrNot) {
+    this.author = author;
+    this.title = title;
+    this.pageNo = pageNo;
+    this.readOrNot = readOrNot;
+    this.info = `Author: ${author}
     Title: ${title}
     Number of pages: ${pageNo}
     Read? ${readOrNot}`;
+  }
 }
-
-Book.prototype.toggleReadStatus = (newBookDiv) => {
-  const toggleReadButton = document.createElement("button");
-  toggleReadButton.textContent = readOrNot;
-  toggleReadButton.addEventListener("click", () => {
-    if (toggleReadButton.textContent === "Yes!") {
-      toggleReadButton.textContent = "Not yet...";
-      newBookDiv.textContent.replace("Yes!", "Not yet...");
-    } else {
-      toggleReadButton.textContent = "Yes!";
-      newBookDiv.textContent.replace("Not yet...", "Yes!");
-    }
-  });
-  newBookDiv.appendChild(toggleReadButton);
-};
 
 function addBookToLibrary(book) {
   myLibrary.push(book);
@@ -47,9 +34,10 @@ function showLibrary() {
     const newBookDiv = document.createElement("div");
     newBookDiv.classList.add("book");
     newBookDiv.textContent = book.info;
+    const that = this;
     libraryContainer.append(newBookDiv);
     addRemoveBookButtonTo(newBookDiv);
-    addToggleReadButtonTo(newBookDiv);
+    addToggleReadButtonTo(newBookDiv, that);
   });
 }
 
@@ -110,7 +98,7 @@ function addRemoveBookButtonTo(newBookDiv) {
   newBookDiv.appendChild(removeBookButton);
 }
 
-function addToggleReadButtonTo(newBookDiv) {
+function addToggleReadButtonTo(newBookDiv, that) {
   const toggleReadButton = document.createElement("button");
   toggleReadButton.textContent = this.readOrNot;
   newBookDiv.appendChild(toggleReadButton);
@@ -119,10 +107,12 @@ function addToggleReadButtonTo(newBookDiv) {
       toggleReadButton.textContent = "Not yet...";
       newBookDiv.textContent.replace("Yes!", "Not yet...");
       readStatus.checked = false;
+      that.readOrNot = "Not yet...";
     } else {
       toggleReadButton.textContent = "Yes!";
       newBookDiv.textContent.replace("Not yet...", "Yes!");
       readStatus.checked = true;
+      that.readOrNot = "Yes!";
     }
   });
 }
